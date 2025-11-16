@@ -1,0 +1,25 @@
+{
+  "name": "react-demo",
+  "version": "1.0.0",
+  "description": "A simple React demo project using Rspack",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node build/dev-server.js",
+    "build": "node build/build.js"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "Bin",
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.2",
+  "dependencies": {
+    "@rspack/core": "^1.6.3",
+    "@rspack/dev-server": "^1.1.4",
+    "@rspack/plugin-html": "^0.5.8",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@rspack/plugin-react-refresh": "^1.5.3"
+  }
+}
