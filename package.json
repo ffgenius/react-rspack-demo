@@ -13,13 +13,17 @@
   "license": "ISC",
   "packageManager": "pnpm@10.18.2",
   "dependencies": {
-    "@rspack/core": "^1.6.3",
-    "@rspack/dev-server": "^1.1.4",
-    "@rspack/plugin-html": "^0.5.8",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@rspack/plugin-react-refresh": "^1.5.3"
+    "@rspack/core": "^1.6.3",
+    "@rspack/dev-server": "^1.1.4",
+    "@rspack/plugin-html": "^0.5.8",
+    "@rspack/plugin-react-refresh": "^1.5.3",
+    "css-loader": "^7.1.2",
+    "less": "^4.4.2",
+    "less-loader": "^12.3.0",
+    "style-loader": "^4.0.0"
   }
 }

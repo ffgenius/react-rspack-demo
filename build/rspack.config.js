@@ -2,12 +2,14 @@ import path from 'node:path';
 import { fileURLToPath } from "url";
 import ReactRefreshPlugin from '@rspack/plugin-react-refresh';
 import userConfig from '../config/react.config.js';
-import { HtmlRspackPlugin } from '@rspack/core';
+import { HtmlRspackPlugin, rspack } from '@rspack/core';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export function createRspackConfig(mode) {
+  const isDev = mode === "development";
+
   return {
     mode,
     devtool: mode === "development" ? "cheap-module-source-map" : false,
@@ -20,6 +22,10 @@ export function createRspackConfig(mode) {
       path: path.resolve(__dirname, "..", userConfig.outputDir),
       filename: "[name].js",
       clean: true,
+    },
+
+    experiments: {
+      css: true,
     },
 
     resolve: {
@@ -36,29 +42,47 @@ export function createRspackConfig(mode) {
       rules: [
         {
           test: /\.(js|jsx)$/,
-          use: [
-            {
-              loader: "builtin:swc-loader",
-              options: {
-                jsc: {
-                  parser: { syntax: "ecmascript", jsx: true },
-                  transform: {
-                    react: {
-                      runtime: "automatic",
-                      refresh: mode === "development",
-                      development: mode === "development",
-                    },
+          use: {
+            loader: "builtin:swc-loader",
+            options: {
+              jsc: {
+                parser: { syntax: "ecmascript", jsx: true },
+                transform: {
+                  react: {
+                    runtime: "automatic", // 必须是 automatic
+                    refresh: true,        // 开发环境才启用
+                    development: true,
                   },
                 },
               },
+              module: { type: "es6" }, // 确保输出 ESM
             },
+          },
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.less$/,
+          type: "javascript/auto",
+          use: [
+            "style-loader",
+            {
+              loader: "css-loader",
+              options: {
+                modules: {
+                  auto: true,
+                  namedExport: false,
+                  exportLocalsConvention: "camelCase",
+                },
+              },
+            },
+            "less-loader",
           ],
         },
       ],
     },
 
     devServer:
-      mode === "development"
+      isDev
         ? {
             port: userConfig.port,
             open: userConfig.open,
