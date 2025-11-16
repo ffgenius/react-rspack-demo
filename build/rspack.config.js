@@ -18,6 +18,8 @@ export function createRspackConfig(mode) {
       main: path.resolve(__dirname, "..", userConfig.entry),
     },
 
+    stats: "errors-only",
+
     output: {
       path: path.resolve(__dirname, "..", userConfig.outputDir),
       filename: "[name].js",
@@ -78,6 +80,32 @@ export function createRspackConfig(mode) {
             "less-loader",
           ],
         },
+        {
+          test: /\.(png|jpe?g|gif|svg)$/i,
+          type: 'asset',
+          parser: {
+            dataUrlCondition: {
+              maxSize: 10 * 1024, // 小于 10kb 内联成 base64
+            }
+          },
+          generator: {
+            filename: 'images/[name].[hash:8][ext]', // 输出路径
+          }
+        },
+        {
+          test: /\.(woff2?|eot|ttf|otf)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'fonts/[name].[hash:8][ext]',
+          }
+        },
+        {
+          test: /\.(mp4|webm|ogg|mp3|wav)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'media/[name].[hash:8][ext]',
+          }
+        }
       ],
     },
 
